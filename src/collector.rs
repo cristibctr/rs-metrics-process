@@ -1,13 +1,14 @@
 #[cfg_attr(target_os = "macos", path = "collector/macos.rs")]
-#[cfg_attr(target_os = "linux", path = "collector/linux.rs")]
+#[cfg_attr(any(target_os = "linux", target_arch = "wasm32"), path = "collector/linux.rs")]
 #[cfg_attr(target_os = "windows", path = "collector/windows.rs")]
 #[allow(unused_attributes)]
 #[cfg_attr(feature = "dummy", path = "collector/dummy.rs")]
 mod collector;
+mod linux;
 
 #[cfg(all(
     not(feature = "dummy"),
-    not(any(target_os = "macos", target_os = "linux", target_os = "windows"))
+    not(any(target_os = "macos", target_os = "linux", target_os = "windows", target_arch = "wasm32"))
 ))]
 compile_error!(
     "A feature \"dummy\" must be enabled to compile this crate on non supported platforms."
@@ -71,7 +72,7 @@ mod tests {
     }
 
     #[cfg(not(target_os = "macos"))]
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(any(target_os = "linux", target_arch = "wasm32")))]
     #[cfg(not(target_os = "windows"))]
     #[cfg(feature = "dummy")]
     #[test]
