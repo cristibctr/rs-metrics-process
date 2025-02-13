@@ -41,7 +41,7 @@ mach2 = "0.4"
 once_cell = "1.13.1"
 rlimit = "0.10.0"
 
-[target.'cfg(target_os = "linux")'.dependencies]
+[target.'cfg(any(target_os = "linux", target_arch = "wasm32"))'.dependencies]
 once_cell = "1.13.1"
 procfs = { version = "0.17.0", default-features = false }
 
@@ -64,3 +64,9 @@ assert_matches = "1.5.0"
 axum = "0.8.1"
 metrics-exporter-prometheus = "0.16.0"
 tokio = { version = "1.20.1", features = ["full"] }
+[patch.crates-io]
+libc = { git = "https://github.com/cristibctr/libc-0.2.169", branch = "wasix-0.2.169" }
+socket2 = { git = "https://github.com/wasix-org/socket2", branch = "v0.5.3" }
+tokio = { git = "https://github.com/wasix-org/tokio", branch = "wasix-1.24.2" }
+procfs = { git = "https://github.com/cristibctr/procfs", branch = "feat/add-wasm-support" }
+rustix = { git = "https://github.com/cristibctr/rustix", branch = "feat/add-wasm-support" }

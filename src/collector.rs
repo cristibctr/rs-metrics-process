@@ -12,7 +12,7 @@
 //! [`Collector`]: crate::Collector
 
 #[cfg_attr(target_os = "macos", path = "implementation/macos.rs")]
-#[cfg_attr(target_os = "linux", path = "implementation/linux.rs")]
+#[cfg_attr(any(target_os = "linux", target_arch = "wasm32"), path = "implementation/linux.rs")]
 #[cfg_attr(target_os = "windows", path = "implementation/windows.rs")]
 #[cfg_attr(target_os = "freebsd", path = "implementation/freebsd.rs")]
 #[cfg_attr(target_os = "openbsd", path = "implementation/openbsd.rs")]
@@ -27,7 +27,8 @@ mod implementation;
         target_os = "linux",
         target_os = "windows",
         target_os = "freebsd",
-        target_os = "openbsd"
+        target_os = "openbsd",
+        target_arch = "wasm32"
     ))
 ))]
 compile_error!(
@@ -125,7 +126,7 @@ mod tests {
     }
 
     #[cfg(not(target_os = "macos"))]
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(any(target_os = "linux", target_arch = "wasm32")))]
     #[cfg(not(target_os = "windows"))]
     #[cfg(not(target_os = "freebsd"))]
     #[cfg(not(target_os = "openbsd"))]
